@@ -107,13 +107,13 @@ CREATE TABLE IF NOT EXISTS usuario.credencial (
   CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario.usuario(id_usuario) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS usuario.especialidad (
-  id_especialidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+CREATE TABLE IF NOT EXISTS usuario.servicio (
   usuario_id UUID NOT NULL,
   servicio_id INTEGER NOT NULL,
   activo BOOLEAN DEFAULT TRUE,
   fecha_creacion TIMESTAMP DEFAULT NOW(),
   fecha_modificacion TIMESTAMP,
+  PRIMARY KEY (usuario_id, servicio_id),
   CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario.usuario(id_usuario) ON DELETE CASCADE,
   CONSTRAINT fk_servicio FOREIGN KEY (servicio_id) REFERENCES catalogo.servicio(id_servicio) ON DELETE CASCADE
 );
@@ -274,8 +274,8 @@ VALUES
   ((SELECT id_usuario FROM usuario.usuario WHERE email = 'isabel.ruiz@example.com'), 'isabel.ruiz', '$2b$12$8.2LMKk0Odm8Bvsfvt0mK.V3pmTD7JMa3ArbGoT6XPkiSYALM5fLS', TRUE, NOW()),
   ((SELECT id_usuario FROM usuario.usuario WHERE email = 'mateo.clark@example.com'), 'mateo.clark', '$2b$12$8.2LMKk0Odm8Bvsfvt0mK.V3pmTD7JMa3ArbGoT6XPkiSYALM5fLS', TRUE, NOW());
 
--- Inserciones de especialidades para la tabla 'usuario.especialidad'
-INSERT INTO usuario.especialidad (usuario_id, servicio_id)
+-- Inserciones de especialidades para la tabla 'usuario.servicio'
+INSERT INTO usuario.servicio (usuario_id, servicio_id)
 VALUES
   -- Admisiones
   ((SELECT id_usuario FROM usuario.usuario WHERE identificacion = '456789'), (SELECT id_servicio FROM catalogo.servicio WHERE codigo = 30001)),
